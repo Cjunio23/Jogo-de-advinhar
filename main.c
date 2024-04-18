@@ -1,91 +1,156 @@
-//Calculadora de 5 operaçoes:soma(+),subtração(-),multiplicaçao (* ou x),divisao(\)
-//e potenciaçao(^).obs:(na multiplicaçao tem que aceitar * e x.)
-//Sempre que o usuario digitar uma operaçao diferente das disponiblizadas
-//imprimir a mensagem "operaçao invalida",pergunta se deseja continuar ou finalizar o programa.
-//Fazer uma estrutura de repetiçao,com 2 regras
-//o programa deve continuar sempre que o usuario digitar S ou s.
-//e finalizar com N e n.
-//E no final do programa mostrar a quantidade de operaçao validas.
-//Os while dentro do while e para aceitar somente s e n como resposta se deve eu nao continuar programa
-//e caso seja diferente de s ou n,ira pergunta novamente.
-//Switch foi usado para realizar a conta quando indentificar o operador.
-//E o while principal foi para o programa continuar rodando enquanto o usuario desejar.
-#include<stdio.h>
-#include<math.h>
-int main(){
-float n1,n2,resultado;//n1 e n2=numeros e resultado das operaçoes
- char op;//operaçoes
- int contador = 0;//contador de operaçoes
- char resposta = 's';//Continuar sempre que manter esse valor(trocar para S e s)
- printf ("\n____________________________________________\n");
- while(resposta != 'n')
- {
- printf("\nDigite a expressao: ");//Digite o numero que deseja realizar a operaçao
- scanf("%f %c %f", &n1,&op,&n2);//scan float para jogar em n1 e n2 para realizar a operaçao selecionada
- getchar();
- if (op != '+' && op != '-' && op != '*' && op != 'x' && op != '\\' && op != '^')
- { //If para caso o operador seja invalido
- printf("Operador invalido!\n");//Operaçao invalida
- printf("Voce deseja digitar outra expressao (s/n)?");
- scanf(" %c", &resposta);
- while ((resposta !='S' && resposta != 's') && (resposta !='N' && resposta != 'n'))
- { //While para ver qual foi a resposta.
- printf("\nResposta invalida!\n");//Operaçao invalida
- printf("Voce deseja digitar outra expressao (s/n)?");
- scanf(" %c", &resposta);
- }
- if(resposta == 'S' || resposta =='s')//Continuar rodando o programa.
- {
- continue;
- }
- else if (resposta == 'N' || resposta == 'n')//finaliza o while e continua na linha 60.
- {
- break;
- }
- }
-//Estrutura para realizar a operaçao selecionada em switch.
-//Com while para continuar executando.
- switch (op)
- {
- case '+':
- printf("resultado = %0.2f\n",n1 + n2);//soma
- break;
- case '-':
- printf("resultado = %0.2f\n",n1 - n2);//subtraçao
- break;
- case '*' :
- printf("resultado = %0.2f\n",n1 * n2);//multiplicaçao
- break;
- case 'x' :
- printf("resultado = %0.2f\n",n1 * n2);//multiplicaçao aceitando a letra x.
- break;
- case '\\':
- printf("resultado = %0.2f\n",n1 / n2);//Divisao.(Utilizei 2 barra para o linguagem reconhecer.
- break;
- case '^':
- printf("resultado = %0.2f\n", pow(n1, n2));//para pontenciaçao usei pow.
- break;
- }
- printf("Voce deseja digitar outra expressao (s/n)?");
- scanf("%c", &resposta);
- getchar();
- contador += 1;//contador de operaçao,logo depois do switch para pegar as operaçoes validas.
- while ((resposta !='S' && resposta != 's') && (resposta !='N' && resposta != 'n'))
- {
- printf("\nResposta invalida!\n");//Operaçao invalida
- printf("Voce deseja digitar outra expressao (s/n)?");
- scanf(" %c", &resposta);
- }
- if(resposta == 'S' || resposta =='s')//para continuar o programa.
- {
- continue;
- }
- else if (resposta == 'N' || resposta == 'n')//finaliza a estrutura do while e continua na linha 60.
- {
- break;
- }
- }
- printf ("\nForam calculadas %i expressoes validas.\n", contador);
- //Quantidade de operacoes validas usando o contador.
- printf("Tchau!\n");//Fim do programa.
- printf ("____________________________________________\n");}
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+//Jogo de advinhar numeros secretos.O programa deve gerar um numero secreto e o usuario deve adivinhar qual foi o numero.
+//Em seguida,o usuario ira pensar em um numero secreto e o computador ira adivinhar.
+//Toda vez que o jogo iniciar, o usuario devera informar a quantidade de rodadas desejadas.
+//Cada rodada consiste de 2 jogadas,na primeira jogada o usuario advinha o numero e, na segunda jogada, o programa advinha o numero.
+//Ao termino das rodadas, o placar geral deve ser informado.Fim do progama.
+
+int main()
+{
+    int nuns;
+    srand(time(0)); //A partir desse ira ser gerado os numeros aleatorio(segundos decorridos desde 1970)
+    int tentativasH = 0, tentativasM = 0, rodadas = 0, rodadasH = 0, rodadasM = 0, i = 0, max = 21, mini = 0; //tentavasH=humanos,tentativasM=maquinas
+    int numero, menor, maior, hisM = 0, hisH = 0;
+    char resposta;
+
+    printf("_________________________________________________________________________\n\n");
+
+    printf("Digite a quantidade de rodadas desejada:"); //Primeira parte,o usuario deve escolher quantas rodadas ele quer.
+    scanf("%d", &rodadas);
+
+    for (i = 1; i <= rodadas; i++) //entao i comeca em 0 e enquanto i for menor que o numero de rodadas o loop vai rodar
+    {
+        max = 21;
+        mini = 0;
+        tentativasH = tentativasM = 0;
+        nuns = rand() % 21; //Para gerar numeros aleatorios,%21 e resto da divisao por 21,sempre sera um valor entre 0 e 20.
+        printf("\nRodada %d\n", i); //Rodada inicial,imprimir essa mensagem assim que come ar o jogo.
+        printf("Qual o numero secreto gerado pelo computador?\n"); //Imprimir essa mensagem.
+        printf("Digitae um numero entre 0 e 20: "); //O usuario deve digitar um numero entre 0 e 20,e ver se acerta o numero secreto.
+        tentativasH++;
+        do
+        {
+            scanf("%d", &numero);
+            if (numero < nuns)
+            {
+                printf("Errou,o numero secreto e maior.Tente novamente: "); //Se o numero digitado for menor deve imprimir essa mensagem,e o usuario deve tentar de novo.
+                tentativasH++;
+            }
+            else if (numero > nuns)
+            {
+                printf("Errou,o numero secreto e menor.Tente novamente: "); //Se o numero digitado for maior deve imprimir essa mensagem,e o usuario deve tentar de novo.
+                tentativasH++;
+            }
+        } while (numero != nuns);
+        printf("Parabens,voce acertou em %d tentativas.\n\n", tentativasH); //Quando o usuario acerta deve imprimir essa mensangem,e mostra em quantas tentativas foi.
+        //rodadasH++;
+
+        do
+        {
+            printf("Pense em um numero secreto entre 0 e 20. Pensou (s/n)? ");
+            scanf(" %c", &resposta);
+            getchar();
+        } while (resposta != 'S' && resposta != 's'); //Enquanto o usuario nao digitar s ou S ele nao vai proseguir.
+
+        do
+        {
+           nuns = rand() % max;
+           if(mini == max){
+            nuns = mini;
+           }
+            else if (mini > 0)
+            {
+                while (nuns <= mini || nuns >= max)
+                {
+                    nuns = rand() % 21;
+                }
+            }
+
+            printf("O numero secreto e %d (s/n)? ", nuns);
+            scanf("%c", &resposta);
+            getchar();
+            tentativasM++; //Vai gerar o numero aleatorio e vai pergunta se e o numero certo.
+
+            if (resposta == 'N' || resposta == 'n')
+            {
+                printf("O numero secreto e maior do que %d ? ", nuns);
+                scanf("%c", &resposta);
+                getchar();
+                if (resposta == 'S' || resposta == 's')
+                {
+                    mini = nuns;
+                    //mini = nuns + 1;
+                    //max = 21 - mini;
+                }
+            else
+           {
+              //mini = 0;
+              max = nuns;
+            }
+            }
+            else
+            {
+               //rodadasM++;
+                break;
+            }
+
+        } while (1);//Quando o computador acerta o numero.
+        printf("\nComputador acertou em %d tentativas e o usuario em %d.\n\n", tentativasM, tentativasH);
+
+        if (tentativasM < tentativasH)
+        {
+            rodadasM++;
+            printf("Computador venceu a rodada numero %d de um total de %d.\n", rodadasM, rodadas); //se as tentativas da maquinas for menor do que a do usuario.
+        }
+        else if (tentativasM > tentativasH)
+        {
+            rodadasH++;
+            printf("Usuario venceu a rodada numero %d de um total de %d.\n", rodadasH, rodadas); //se nao.
+        }
+
+        else
+        {
+            printf("Empate de rodada numero %d de um total de %d.\n", rodadasH, rodadasM);
+        }
+        printf("\nPlacar de rodadas:\n");
+        printf("Computador:%d  Usuario:%d \n\n", rodadasM, rodadasH);
+
+    } //Final do for
+
+    if (rodadasH > rodadasM)
+    {
+        printf("Usuario venceu.\n");
+    }
+    else if (rodadasH < rodadasM)
+    {
+        printf("Computador venceu.\n");
+    }
+    else
+        printf("Empate");
+
+    printf("Placar final:\n");
+    printf("Computador:%d  Usuario:%d\n", rodadasM, rodadasH);
+
+    FILE *fp;
+
+    fp = fopen("arquivo.txt", "r");
+    if (!fp) //Nao achou o arquivo.
+    {
+        fp = fopen("arquivo.txt", "w");
+    }
+    else
+    {
+        fscanf(fp, " %d %d", &hisM, &hisH); //primeiro numero maquina e segundo usuario.
+        fclose(fp);
+        fopen("arquivo.txt", "w");
+    }
+    hisM += rodadasM; //his= historico
+    hisH += rodadasH;
+    fprintf(fp, "%d %d", hisM, hisH);
+    printf("Historicamente o computador ja venceu %d rodadas e o usuario %d rodadas.\n", hisM, hisH);
+    fclose(fp);
+
+    printf("_________________________________________________________________________\n");
+}
